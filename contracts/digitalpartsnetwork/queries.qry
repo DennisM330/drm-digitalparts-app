@@ -1,0 +1,26 @@
+query selectVehicles {
+  description: "Select all vehicles"
+  statement:
+      SELECT net.biz.digitalpartsnetwork.Vehicle
+}
+
+query selectComponentAssemblies {
+  description: "Select all component assemblies"
+  statement:
+      SELECT net.biz.digitalpartsnetwork.ComponentAssembly
+}
+
+
+query selectPartsBySupplier {
+  description: "Select all component parts"
+  statement:
+      SELECT net.biz.digitalpartsnetwork.ComponentPart
+          WHERE (supplier == _$supplierID)
+}
+
+query selectPartHistory {
+  description: "Select Asset based on Part"
+  statement:
+SELECT org.hyperledger.composer.system.HistorianRecord
+          WHERE (eventsEmitted CONTAINS 'resource:net.biz.digitalpartsnetwork.ComponentPart#PTNO1234567890')
+}

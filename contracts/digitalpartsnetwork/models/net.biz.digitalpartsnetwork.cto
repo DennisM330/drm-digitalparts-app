@@ -1,0 +1,110 @@
+/*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+/**
+* My digital parts network
+*/
+namespace net.biz.digitalpartsnetwork
+
+asset Vehicle identified by vehicleId {
+  o String   vehicleId
+  --> Owner   owner
+  --> Manufacturer manufacturer
+  o String   make
+  o String   model
+  o String   year
+  --> ComponentAssembly[] components optional
+  o Boolean  inWarranty   optional
+}
+asset ComponentAssembly identified by componentId {
+  o String   componentId
+  o String   description
+  o DateTime assemblyDate optional
+  --> Manufacturer  manufacturer
+  --> ComponentPart[] parts optional
+  o Integer  quantity
+  o Boolean  defective
+}
+asset ComponentPart identified by partNo {
+  o String   partNo
+  o String   description
+  --> Supplier  supplier
+  o Integer  quantity
+  o Boolean  defective
+}
+participant Owner identified by licenseNo {
+  o String licenseNo
+  o String firstName
+  o String lastName
+  o String address1
+  o String address2 optional
+  o String city
+  o String state
+  o String zip
+  o String phone
+}
+participant Supplier identified by supplierId {
+  o String supplierId
+  o String supplierName
+  o String address1
+  o String address2 optional
+  o String city
+  o String state
+  o String zip
+  o String phone
+}
+participant Manufacturer identified by manufacturerId {
+  o String manufacturerId
+  o String manufacturerName
+  o String address1
+  o String address2 optional
+  o String city
+  o String state
+  o String zip
+  o String phone
+}
+
+/**
+ * JUST FOR INITIALIZING A DEMO
+ */
+transaction setupDemo {
+}
+
+/**
+ * Tear down demo
+ */
+transaction undoSetup  {
+}
+
+event vehicleAddAssemblyEvent {
+  o String eventMessage
+   --> Vehicle vehicle
+   --> ComponentAssembly component
+}
+
+event componentAddPartEvent {
+  o String eventMessage
+   --> ComponentAssembly component
+   --> ComponentPart partNo
+}
+
+
+transaction addVehicleAssembly {
+  --> ComponentAssembly component
+  --> Vehicle vehicle
+}
+
+transaction addAssemblyPart {
+  --> ComponentAssembly component
+  --> ComponentPart partNo
+}
